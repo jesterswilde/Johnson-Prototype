@@ -6,19 +6,19 @@ public class MatrixGenerator : MonoBehaviour {
 
     public GameObject prefab;
     public float gap;
-    public float sizePerBox;
+    //public float sizePerBox;
 
     [SerializeField]
-    private int boxesInWidth = 10;
+    private int boxesInWidth;
     [SerializeField]
-    private int boxesInHeight = 10;
+    private int boxesInHeight;
     [SerializeField]
-    private int boxesInDeepth = 10;
+    private int boxesInDeepth;
 
     private void Start ()
     {
-        float stripe = sizePerBox + gap;
-
+        float stripe = gap + prefab.transform.localScale.x;
+        Debug.Log(stripe);
 	    for(int i = 0; i < boxesInWidth; i++)
         {
             for(int j = 0; j < boxesInHeight; j++)
@@ -26,6 +26,7 @@ public class MatrixGenerator : MonoBehaviour {
                 for(int k = 0; k < boxesInDeepth; k++)
                 {
                     GameObject go = Instantiate(prefab, new Vector3(i * stripe, j * stripe, k * stripe), Quaternion.identity);
+                    go.transform.parent = gameObject.transform;
                 }
             }
         }
