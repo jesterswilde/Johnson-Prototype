@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +7,8 @@ using UnityEngine;
 public class Matrix : MonoBehaviour
 {
     int voxelInWidth = 4;
-    int voxelInHeight = 8;
+    int voxelInHeight = 4;
+    int voxelInDepth = 1;
     float width = 4.0f;
     float height = 4.0f;
 
@@ -15,14 +16,14 @@ public class Matrix : MonoBehaviour
     Mesh mesh;
     Vector3[] vertices;
 
-	private void Start()
-	{
+    private void Start()
+    {
         Generator();
-	}
+    }
 
     //vertices test
-	private void OnDrawGizmos()
-	{
+    private void OnDrawGizmos()
+    {
         Gizmos.color = Color.black;
         if (vertices == null)
         {
@@ -32,9 +33,9 @@ public class Matrix : MonoBehaviour
         {
             Gizmos.DrawSphere(vertices[i], 0.05f);
         }
-	}
+    }
 
-	void Generator()
+    void Generator()
     {
         //create mesh object
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
@@ -42,58 +43,92 @@ public class Matrix : MonoBehaviour
         float stripe = width / voxelInWidth;
         int vertexInWidth = voxelInWidth * 2;
         int vertexInHeight = voxelInHeight * 2;
-
+        int vertexInDepth = 2;
         //generate vertices
-        vertices = new Vector3[vertexInWidth * vertexInHeight];
+        vertices = new Vector3[vertexInWidth * vertexInHeight * 2];
         int index = 0;
-        for (int y = 0; y < vertexInHeight; y++)
+        for (int z = 0; z < vertexInDepth; z++)
         {
-            for (int x = 0; x < vertexInWidth; x++)
+            for (int y = 0; y < vertexInHeight; y++)
             {
-                if(x % 2 == 0 && y % 2 == 0)
+                for (int x = 0; x < vertexInWidth; x++)
                 {
-                    vertices[index] = new Vector3(x * stripe, y * stripe);
+                    if (x % 2 == 0 && y % 2 == 0)
+                    {
+                        vertices[index] = new Vector3(x * stripe, y * stripe, z * size);
+                    }
+                    if (x % 2 == 1 && y % 2 == 0)
+                    {
+                        vertices[index] = new Vector3((x - 1) * stripe + size, y * stripe, z * size);
+                    }
+                    if (x % 2 == 0 && y % 2 == 1)
+                    {
+                        vertices[index] = new Vector3(x * stripe, (y - 1) * stripe + size, z * size);
+                    }
+                    if (x % 2 == 1 && y % 2 == 1)
+                    {
+                        vertices[index] = new Vector3((x - 1) * stripe + size, (y - 1) * stripe + size, z * size);
+                    }
+                    index += 1;
                 }
-                if(x % 2 == 1 && y % 2 == 0)
-                {
-                    vertices[index] = new Vector3((x - 1) * stripe + size, y * stripe);
-                }
-                if(x % 2 == 0 && y % 2 == 1)
-                {
-                    vertices[index] = new Vector3(x * stripe, (y - 1) * stripe + size);
-                }
-                if(x % 2 ==1 && y % 2 == 1)
-                {
-                    vertices[index] = new Vector3((x - 1) * stripe + size, (y - 1) * stripe + size);
-                }
-                index += 1;
             }
         }
         mesh.vertices = vertices;
 
         //generate uv
 
-        //draw front face
-        int[] triangles = new int[voxelInWidth * voxelInHeight * 6];
+        //generate triangles
+        int[] triangles = new int[voxelInWidth * voxelInHeight * 6 * 2];
         int ti = 0, vi = 0;
         Debug.Log(vertices.Length + " | " + triangles.Length);
-        for (int y = 0; y < voxelInHeight; y ++)
+
+        //draw front face.
+        for (int y = 0; y < voxelInHeight; y++)
         {
             for (int x = 0; x < voxelInWidth; x++)
             {
-                    if (x == 0 && y != 0)
-                    {
-                        vi += vertexInWidth;
-                        Debug.Log("jump to next row");
-                    }
-                    triangles[ti] = vi;
-                    triangles[ti + 1] = triangles[ti + 4] = voxelInWidth * 2 + vi;
-                    triangles[ti + 2] = triangles[ti + 3] = vi + 1;
-                    triangles[ti + 5] = voxelInWidth * 2 + 1 + vi;
-                    ti += 6;
-                    vi += 2;
+                if (x == 0 && y != 0)
+                {
+                    vi += vertexInWidth;
+                    Debug.Log("jump to next row");
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 4] = voxelInWidth * 2 + vi;
+                triangles[ti + 2] = triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = voxelInWidth * 2 + 1 + vi;
+                ti += 6;
+                vi += 2;
             }
         }
+
+       // draw back face
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0)
+                {
+                    vi += vertexInWidth;
+                    Debug.Log("jump to next row");
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = vi + 1;
+                triangles[ti + 4] = voxelInWidth * 2 + vi + 1;
+                triangles[ti + 2] = voxelInWidth * 2 + vi;
+                triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = voxelInWidth * 2 + vi;
+                ti += 6;
+                vi += 2;
+            }
+        }
+
+        //draw bottom
+
+        //draw top
+
+        //draw left side
+
+        //draw right side
         mesh.triangles = triangles;
     }
 }
