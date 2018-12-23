@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class Matrix : MonoBehaviour
 {
-    int voxelInWidth = 5;
-    int voxelInHeight = 5;
+    int voxelInWidth = 10;
+    int voxelInHeight = 10;
     int voxelInDepth = 1;
-    float width = 4.0f;
-    float height = 4.0f;
+    float width = 6.0f;
+    float height = 6.0f;
 
     float size = 0.2f;
     Mesh mesh;
@@ -22,18 +22,18 @@ public class Matrix : MonoBehaviour
     }
 
     //vertices test
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.black;
-        if (vertices == null)
-        {
-            return;
-        }
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(vertices[i], 0.05f);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.black;
+    //    if (vertices == null)
+    //    {
+    //        return;
+    //    }
+    //    for (int i = 0; i < vertices.Length; i++)
+    //    {
+    //        Gizmos.DrawSphere(vertices[i], 0.05f);
+    //    }
+    //}
 
     void Generator()
     {
@@ -43,7 +43,7 @@ public class Matrix : MonoBehaviour
         float stripe = width / voxelInWidth;
         int vertexInWidth = voxelInWidth * 2;
         int vertexInHeight = voxelInHeight * 2;
-        int vertexInDepth = 2;
+        int vertexInDepth = voxelInDepth * 2;
 
         //generate vertices
         vertices = new Vector3[vertexInWidth * vertexInHeight * 2];
@@ -113,11 +113,9 @@ public class Matrix : MonoBehaviour
                     Debug.Log("jump to the next row");
                 }
                 triangles[ti] = vi;
-                triangles[ti + 1] = vi + 1;
+                triangles[ti + 1] = triangles[ti + 3] = vi + 1;
                 triangles[ti + 4] = voxelInWidth * 2 + vi + 1;
-                triangles[ti + 2] = voxelInWidth * 2 + vi;
-                triangles[ti + 3] = vi + 1;
-                triangles[ti + 5] = voxelInWidth * 2 + vi;
+                triangles[ti + 2] = triangles[ti + 5] = voxelInWidth * 2 + vi;
                 ti += 6;
                 vi += 2;
             }
