@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Matrix : MonoBehaviour
 {
-    int voxelInWidth = 2;
-    int voxelInHeight = 2;
+    int voxelInWidth = 5;
+    int voxelInHeight = 5;
     int voxelInDepth = 1;
     float width = 4.0f;
     float height = 4.0f;
@@ -83,83 +83,83 @@ public class Matrix : MonoBehaviour
         int ti = 0, vi = 0;
         Debug.Log(vertices.Length + " | " + triangles.Length);
 
-  //      //draw front faces
-  //      for (int y = 0; y < voxelInHeight; y++)
-  //      {
-  //          for (int x = 0; x < voxelInWidth; x++)
-  //          {
-  //              if (x == 0 && y != 0)
-  //              {
-  //                  vi += vertexInWidth;
-  //                  Debug.Log("jump to next row");
-  //              }
-  //              triangles[ti] = vi;
-  //              triangles[ti + 1] = triangles[ti + 4] = voxelInWidth * 2 + vi;
-  //              triangles[ti + 2] = triangles[ti + 3] = vi + 1;
-  //              triangles[ti + 5] = voxelInWidth * 2 + 1 + vi;
-  //              ti += 6;
-  //              vi += 2;
-  //          }
-  //      }
+        //draw front faces
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0 && y != 0)
+                {
+                    vi += vertexInWidth;
+                    Debug.Log("jump to next row");
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 4] = voxelInWidth * 2 + vi;
+                triangles[ti + 2] = triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = voxelInWidth * 2 + 1 + vi;
+                ti += 6;
+                vi += 2;
+            }
+        }
 
-  //      //draw back faces
-  //      for (int y = 0; y < voxelInHeight; y++)
-  //      {
-  //          for (int x = 0; x < voxelInWidth; x++)
-  //          {
-  //              if (x == 0)
-  //              {
-  //                  vi += vertexInWidth;
-  //                  Debug.Log("jump to the next row");
-  //              }
-  //              triangles[ti] = vi;
-  //              triangles[ti + 1] = vi + 1;
-  //              triangles[ti + 4] = voxelInWidth * 2 + vi + 1;
-  //              triangles[ti + 2] = voxelInWidth * 2 + vi;
-  //              triangles[ti + 3] = vi + 1;
-  //              triangles[ti + 5] = voxelInWidth * 2 + vi;
-  //              ti += 6;
-  //              vi += 2;
-  //          }
-  //      }
+        //draw back faces
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0)
+                {
+                    vi += vertexInWidth;
+                    Debug.Log("jump to the next row");
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = vi + 1;
+                triangles[ti + 4] = voxelInWidth * 2 + vi + 1;
+                triangles[ti + 2] = voxelInWidth * 2 + vi;
+                triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = voxelInWidth * 2 + vi;
+                ti += 6;
+                vi += 2;
+            }
+        }
 
-		////draw bottom
-		//vi = 0;
-        //for (int y = 0; y < voxelInHeight; y++)
-        //{
-        //    for (int x = 0; x < voxelInWidth; x++)
-        //    {
-        //        if(x == 0 && y != 0)
-        //        {
-        //            vi += vertexInWidth;
-        //        }
-        //        triangles[ti] = vi;
-        //        triangles[ti + 1] = triangles[ti + 3] = vi + 1;
-        //        triangles[ti + 2] = triangles[ti + 5] = vertexInWidth * vertexInHeight + vi;
-        //        triangles[ti + 4] = vertexInWidth * vertexInHeight + vi + 1;
-        //        ti += 6;
-        //        vi += 2;
-        //    }
-        //}
+		//draw bottom
+		vi = 0;
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if(x == 0 && y != 0)
+                {
+                    vi += vertexInWidth;
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 3] = vi + 1;
+                triangles[ti + 2] = triangles[ti + 5] = vertexInWidth * vertexInHeight + vi;
+                triangles[ti + 4] = vertexInWidth * vertexInHeight + vi + 1;
+                ti += 6;
+                vi += 2;
+            }
+        }
 
-        ////draw top
-        //vi = 0;
-        //for (int y = 0; y < voxelInHeight; y++)
-        //{
-        //    for (int x = 0; x < voxelInWidth; x++)
-        //    {
-        //        if (x == 0)
-        //        {
-        //            vi += vertexInWidth;
-        //        }
-        //        triangles[ti] = vi;
-        //        triangles[ti + 1] = triangles[ti + 4] = vertexInWidth * vertexInHeight + vi;
-        //        triangles[ti + 2] = triangles[ti + 3] = vi + 1;
-        //        triangles[ti + 5] = vertexInWidth * vertexInHeight + vi + 1;
-        //        ti += 6;
-        //        vi += 2;
-        //    }
-        //}
+        //draw top
+        vi = 0;
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0)
+                {
+                    vi += vertexInWidth;
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 4] = vertexInWidth * vertexInHeight + vi;
+                triangles[ti + 2] = triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = vertexInWidth * vertexInHeight + vi + 1;
+                ti += 6;
+                vi += 2;
+            }
+        }
 
         //draw left side
         vi = 0;
@@ -179,8 +179,25 @@ public class Matrix : MonoBehaviour
                 vi += 2;//2 4  
             }
         }
-        //draw right side
 
+        //draw right side
+        vi = 1;
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0 && y != 0)
+                {
+                    vi += vertexInWidth;
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 3] = vi + vertexInWidth;
+                triangles[ti + 2] = triangles[ti + 5] = vi + vertexInWidth * vertexInHeight;
+                triangles[ti + 4] = vi + vertexInWidth * vertexInHeight + vertexInWidth;
+                ti += 6;
+                vi += 2;//2 4  
+            }
+        }
         mesh.triangles = triangles;
     }
 }
