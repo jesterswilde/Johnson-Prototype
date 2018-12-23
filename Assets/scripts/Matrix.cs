@@ -7,7 +7,7 @@ using UnityEngine;
 public class Matrix : MonoBehaviour
 {
     int voxelInWidth = 4;
-    int voxelInHeight = 4;
+    int voxelInHeight = 8;
     float width = 4.0f;
     float height = 4.0f;
 
@@ -19,6 +19,7 @@ public class Matrix : MonoBehaviour
 	{
         Generator();
 	}
+
     //vertices test
 	private void OnDrawGizmos()
 	{
@@ -29,7 +30,7 @@ public class Matrix : MonoBehaviour
         }
         for (int i = 0; i < vertices.Length; i++)
         {
-            Gizmos.DrawSphere(vertices[i], 0.1f);
+            Gizmos.DrawSphere(vertices[i], 0.05f);
         }
 	}
 
@@ -72,21 +73,27 @@ public class Matrix : MonoBehaviour
 
         //generate uv
 
-        //draw triangles
-        int[] triangles = new int[voxelInWidth * voxelInHeight * 6 * 2];
+        //draw front face
+        int[] triangles = new int[voxelInWidth * voxelInHeight * 6];
         int ti = 0, vi = 0;
-        for (int y = 0; y < voxelInHeight * 1; y++)
+        Debug.Log(vertices.Length + " | " + triangles.Length);
+        for (int y = 0; y < voxelInHeight; y ++)
         {
-            for (int x = 0; x < voxelInWidth * 1; x++)
+            for (int x = 0; x < voxelInWidth; x++)
             {
-                triangles[ti] = vi;
-                triangles[ti + 1] = triangles[ti + 3] = vi + 1;
-                triangles[ti + 2] = triangles[ti + 4] = voxelInWidth * 2 + vi + 1;
-                triangles[ti + 5] = voxelInWidth * 2 + vi + 2;
-                ti += 6;
-                vi += 2;
+                    if (x == 0 && y != 0)
+                    {
+                        vi += vertexInWidth;
+                        Debug.Log("jump to next row");
+                    }
+                    triangles[ti] = vi;
+                    triangles[ti + 1] = triangles[ti + 4] = voxelInWidth * 2 + vi;
+                    triangles[ti + 2] = triangles[ti + 3] = vi + 1;
+                    triangles[ti + 5] = voxelInWidth * 2 + 1 + vi;
+                    ti += 6;
+                    vi += 2;
             }
         }
-       // mesh.triangles = triangles;
+        mesh.triangles = triangles;
     }
 }
