@@ -123,8 +123,8 @@ public class Matrix : MonoBehaviour
             }
         }
 
-        vi = 0;
-        //draw bottom
+		//draw bottom
+		vi = 0;
         for (int y = 0; y < voxelInHeight; y++)
         {
             for (int x = 0; x < voxelInWidth; x++)
@@ -141,8 +141,25 @@ public class Matrix : MonoBehaviour
                 vi += 2;
             }
         }
-        //draw top
 
+        //draw top
+        vi = 0;
+        for (int y = 0; y < voxelInHeight; y++)
+        {
+            for (int x = 0; x < voxelInWidth; x++)
+            {
+                if (x == 0)
+                {
+                    vi += vertexInWidth;
+                }
+                triangles[ti] = vi;
+                triangles[ti + 1] = triangles[ti + 4] = vertexInWidth * vertexInHeight + vi;
+                triangles[ti + 2] = triangles[ti + 3] = vi + 1;
+                triangles[ti + 5] = vertexInWidth * vertexInHeight + vi + 1;
+                ti += 6;
+                vi += 2;
+            }
+        }
         //draw left side
 
         //draw right side
